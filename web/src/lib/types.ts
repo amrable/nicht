@@ -16,8 +16,15 @@ export type BreakdownItem = {
   role: string;
 };
 
+export type Correction = {
+  original: string;
+  suggested: string;
+  reason: string;
+};
+
 export type Analysis = {
   nouns: Noun[];
   verbs: Verb[];
   breakdown: BreakdownItem[];
+  corrections: Correction[];
 };

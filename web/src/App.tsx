@@ -3,6 +3,7 @@ import { SentenceInput } from "./components/SentenceInput";
 import { NounsTable } from "./components/NounsTable";
 import { VerbsTable } from "./components/VerbsTable";
 import { Breakdown } from "./components/Breakdown";
+import { Corrections } from "./components/Corrections";
 import { LoadingSkeleton } from "./components/LoadingSkeleton";
 import { ErrorBanner } from "./components/ErrorBanner";
 import { analyzeSentence, fetchStats, messageForError } from "./lib/api";
@@ -29,6 +30,7 @@ const EXAMPLE_ANALYSIS: Analysis = {
     { part: "das Buch", role: "Akkusativobjekt" },
     { part: "in die Bibliothek", role: "Lokaladverbial (Direktional)" },
   ],
+  corrections: [],
 };
 
 export default function App() {
@@ -109,6 +111,7 @@ export default function App() {
           {loading && <LoadingSkeleton />}
           {!loading && data && (
             <>
+              <Corrections items={data.corrections} />
               <NounsTable nouns={data.nouns} />
               <VerbsTable verbs={data.verbs} />
               <Breakdown items={data.breakdown} />

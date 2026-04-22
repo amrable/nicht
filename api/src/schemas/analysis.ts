@@ -22,10 +22,17 @@ export const BreakdownItem = z.object({
   role: z.string(),
 });
 
+export const Correction = z.object({
+  original: z.string(),
+  suggested: z.string(),
+  reason: z.string(),
+});
+
 export const AnalysisResponse = z.object({
   nouns: z.array(Noun),
   verbs: z.array(Verb),
   breakdown: z.array(BreakdownItem),
+  corrections: z.array(Correction),
 });
 
 export type Analysis = z.infer<typeof AnalysisResponse>;
