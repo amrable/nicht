@@ -100,4 +100,4 @@ deploy-web:
 		--commit-dirty=true
 
 logs-api:
-	ssh -i $(SSH_KEY) $(SSH_HOST) 'journalctl -u nicht-api -f -n 50'
+	ssh -i $(SSH_KEY) $(SSH_HOST) 'journalctl -u nicht-api -f -n 500'

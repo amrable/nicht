@@ -2,6 +2,7 @@ export type Noun = {
   word: string;
   article: "der" | "die" | "das";
   plural: string | null;
+  english: string;
 };
 
 export type Verb = {
@@ -9,7 +10,16 @@ export type Verb = {
   formInSentence: string;
   partizipII: string;
   auxiliary: "haben" | "sein";
+  english: string;
   present: {
+    ich: string;
+    du: string;
+    erSieEs: string;
+    wir: string;
+    ihr: string;
+    sie: string;
+  };
+  praeteritum?: {
     ich: string;
     du: string;
     erSieEs: string;
@@ -22,6 +32,7 @@ export type Verb = {
 export type BreakdownItem = {
   part: string;
   role: string;
+  english: string;
 };
 
 export type Correction = {
@@ -31,6 +42,7 @@ export type Correction = {
 };
 
 export type Analysis = {
+  translation: string;
   nouns: Noun[];
   verbs: Verb[];
   breakdown: BreakdownItem[];

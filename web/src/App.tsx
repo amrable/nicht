@@ -11,10 +11,16 @@ import type { Analysis } from "./lib/types";
 
 const EXAMPLE_SENTENCE = "Der Mann hat das Buch in die Bibliothek gebracht.";
 const EXAMPLE_ANALYSIS: Analysis = {
+  translation: "The man brought the book to the library.",
   nouns: [
-    { word: "Mann", article: "der", plural: "die Männer" },
-    { word: "Buch", article: "das", plural: "die Bücher" },
-    { word: "Bibliothek", article: "die", plural: "die Bibliotheken" },
+    { word: "Mann", article: "der", plural: "die Männer", english: "man" },
+    { word: "Buch", article: "das", plural: "die Bücher", english: "book" },
+    {
+      word: "Bibliothek",
+      article: "die",
+      plural: "die Bibliotheken",
+      english: "library",
+    },
   ],
   verbs: [
     {
@@ -22,6 +28,7 @@ const EXAMPLE_ANALYSIS: Analysis = {
       formInSentence: "hat ... gebracht",
       partizipII: "gebracht",
       auxiliary: "haben",
+      english: "to bring",
       present: {
         ich: "bringe",
         du: "bringst",
@@ -30,13 +37,25 @@ const EXAMPLE_ANALYSIS: Analysis = {
         ihr: "bringt",
         sie: "bringen",
       },
+      praeteritum: {
+        ich: "brachte",
+        du: "brachtest",
+        erSieEs: "brachte",
+        wir: "brachten",
+        ihr: "brachtet",
+        sie: "brachten",
+      },
     },
   ],
   breakdown: [
-    { part: "Der Mann", role: "Subjekt (Nominativ)" },
-    { part: "hat ... gebracht", role: "Prädikat" },
-    { part: "das Buch", role: "Akkusativobjekt" },
-    { part: "in die Bibliothek", role: "Lokaladverbial (Direktional)" },
+    { part: "Der Mann", role: "Subjekt (Nominativ)", english: "the man" },
+    { part: "hat ... gebracht", role: "Prädikat", english: "brought" },
+    { part: "das Buch", role: "Akkusativobjekt", english: "the book" },
+    {
+      part: "in die Bibliothek",
+      role: "Lokaladverbial (Direktional)",
+      english: "to the library",
+    },
   ],
   corrections: [],
 };
@@ -85,7 +104,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      <div className="fixed top-4 right-4 z-10 flex items-center gap-4 text-xs text-slate-500">
+      <div className="fixed top-4 right-4 z-10 flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
         {count !== null && (
           <span>
             translated {count.toLocaleString()} sentence
@@ -94,11 +113,11 @@ export default function App() {
         )}
         <a
           href="/about"
-          className="hover:text-slate-900 underline-offset-2 hover:underline"
+          className="hover:text-slate-900 dark:hover:text-slate-100 underline-offset-2 hover:underline"
         >
           About
         </a>
-        <iframe
+        {/* <iframe
           src="https://ghbtns.com/github-btn.html?user=amrable&repo=nicht&type=star&count=true"
           frameBorder="0"
           scrolling="0"
@@ -106,7 +125,7 @@ export default function App() {
           height="20"
           title="Star amrable/nicht on GitHub"
           className="block"
-        />
+        /> */}
       </div>
       <main
         lang="de"
@@ -117,7 +136,7 @@ export default function App() {
         }}
       >
         <div className="mx-auto" style={{ maxWidth: 640 }}>
-          <h1 className="text-xl font-medium text-slate-900 leading-snug">
+          <h1 className="text-xl font-medium text-slate-900 dark:text-slate-100 leading-snug">
             German Sentence Analyzer
           </h1>
 
@@ -132,7 +151,15 @@ export default function App() {
               disabled={loading}
               loading={loading}
             />
-            <p className="mt-3 text-xs text-slate-500">
+            {!loading && data?.translation && (
+              <p
+                lang="en"
+                className="mt-3 text-sm text-slate-500 dark:text-slate-400 italic leading-snug"
+              >
+                {data.translation}
+              </p>
+            )}
+            <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
               Uses AI — results may be inaccurate. Double-check when it matters.
             </p>
           </div>
@@ -151,10 +178,14 @@ export default function App() {
                   <Corrections items={data.corrections} />
                 </div>
               )}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+              {data.breakdown.length > 0 && (
+                <div className="mx-auto w-full" style={{ maxWidth: 640 }}>
+                  <Breakdown items={data.breakdown} />
+                </div>
+              )}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                 <NounsTable nouns={data.nouns} />
                 <VerbsTable verbs={data.verbs} />
-                <Breakdown items={data.breakdown} />
               </div>
             </div>
           )}

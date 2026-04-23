@@ -29,7 +29,20 @@
         --fg: #0f172a;
         --muted: #64748b;
         --border: #e2e8f0;
+        --card: #ffffff;
+        --body-fg: #334155;
       }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0b1220;
+          --fg: #e2e8f0;
+          --muted: #94a3b8;
+          --border: #1e293b;
+          --card: #0f172a;
+          --body-fg: #cbd5e1;
+        }
+      }
+      html { color-scheme: light dark; }
       * { box-sizing: border-box; }
       html, body { margin: 0; padding: 0; }
       body {
@@ -55,9 +68,9 @@
         font-weight: 600;
         margin: 2rem 0 0.5rem;
       }
-      p, li { color: #334155; }
-      a { color: #0f172a; text-decoration: underline; text-underline-offset: 3px; }
-      a:hover { color: #1e293b; }
+      p, li { color: var(--body-fg); }
+      a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+      a:hover { opacity: 0.8; }
       .muted { color: var(--muted); font-size: 0.875rem; }
       .back {
         display: inline-block;
@@ -72,7 +85,7 @@
         border-radius: 6px;
         font-size: 0.875rem;
         color: var(--muted);
-        background: #fff;
+        background: var(--card);
       }
     </style>
   </head>
@@ -100,18 +113,21 @@
         renders as three tables.
       </p>
 
+      <!--
       <h2>Who made it</h2>
       <p>
-        Built by <a href="https://github.com/amrable">Amr Fahmy</a>. Source code is on
-        <a href="https://github.com/amrable/nicht">GitHub</a>.
+        Source code is on <a href="https://github.com/amrable/nicht">GitHub</a>.
       </p>
+      -->
 
       <h2>Privacy</h2>
       <p>
         Sentences you submit are sent to the language model provider for
-        analysis and are not stored by this site beyond a counter of how many
-        sentences have been analysed in total. Cloudflare Web Analytics is used
-        for privacy-friendly pageview stats (no cookies, no personal data).
+        analysis. Submitted sentences and the returned analyses may be stored
+        (without IP address or any identifying metadata) to help improve this
+        tool — please don't submit personal or sensitive information.
+        Cloudflare Web Analytics is used for privacy-friendly pageview stats
+        (no cookies, no personal data).
       </p>
 
       <div class="disclaimer">
