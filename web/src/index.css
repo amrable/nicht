@@ -136,3 +136,12 @@ textarea.textarea-bare:focus-visible {
   outline: none;
   box-shadow: none;
 }
+
+/* Sentence carousel: hide scrollbar, keep swipe */
+.carousel-scroller {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carousel-scroller::-webkit-scrollbar {
+  display: none;
+}

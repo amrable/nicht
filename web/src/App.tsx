@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { SentenceInput } from "./components/SentenceInput";
-import { NounsTable } from "./components/NounsTable";
-import { VerbsTable } from "./components/VerbsTable";
-import { Breakdown } from "./components/Breakdown";
-import { Corrections } from "./components/Corrections";
+import { SentenceCarousel } from "./components/SentenceCarousel";
 import { LoadingSkeleton } from "./components/LoadingSkeleton";
 import { ErrorBanner } from "./components/ErrorBanner";
 import Header from "./components/Header";
+import { Favorites } from "./components/Favorites";
 import { analyzeSentence, fetchSharedAnalysis, fetchStats, messageForError, shareAnalysis } from "./lib/api";
-import type { Analysis } from "./lib/types";
+import type { MultiAnalysis } from "./lib/types";
 
-const EXAMPLE_SENTENCE = "Der Mann hat das Buch in die Bibliothek gebracht.";
+const EXAMPLE_SENTENCE =
+  "Der Mann hat das Buch in die Bibliothek gebracht. Ich gehe in dem Park.";
 
 const FAQ = [
   {
@@ -30,60 +29,114 @@ const FAQ = [
     a: "Satzbau uses a large language model, so results can occasionally be wrong. Use it as a study aid and double-check anything that matters with a dictionary or a teacher.",
   },
 ];
-const EXAMPLE_ANALYSIS: Analysis = {
-  analyzed: EXAMPLE_SENTENCE,
-  translation: "The man brought the book to the library.",
-  nouns: [
-    { word: "Mann", article: "der", plural: "die Männer", english: "man" },
-    { word: "Buch", article: "das", plural: "die Bücher", english: "book" },
+const EXAMPLE_ANALYSIS: MultiAnalysis = {
+  sentences: [
     {
-      word: "Bibliothek",
-      article: "die",
-      plural: "die Bibliotheken",
-      english: "library",
+      analyzed: "Der Mann hat das Buch in die Bibliothek gebracht.",
+      translation: "The man brought the book to the library.",
+      nouns: [
+        { word: "Mann", article: "der", plural: "die Männer", english: "man" },
+        { word: "Buch", article: "das", plural: "die Bücher", english: "book" },
+        {
+          word: "Bibliothek",
+          article: "die",
+          plural: "die Bibliotheken",
+          english: "library",
+        },
+      ],
+      verbs: [
+        {
+          infinitive: "bringen",
+          formInSentence: "hat ... gebracht",
+          partizipII: "gebracht",
+          auxiliary: "haben",
+          english: "to bring",
+          present: {
+            ich: "bringe",
+            du: "bringst",
+            erSieEs: "bringt",
+            wir: "bringen",
+            ihr: "bringt",
+            sie: "bringen",
+          },
+          praeteritum: {
+            ich: "brachte",
+            du: "brachtest",
+            erSieEs: "brachte",
+            wir: "brachten",
+            ihr: "brachtet",
+            sie: "brachten",
+          },
+        },
+      ],
+      breakdown: [
+        { part: "Der Mann", role: "Subjekt (Nominativ)", english: "the man" },
+        { part: "hat ... gebracht", role: "Prädikat", english: "brought" },
+        { part: "das Buch", role: "Akkusativobjekt", english: "the book" },
+        {
+          part: "in die Bibliothek",
+          role: "Lokaladverbial (Direktional)",
+          english: "to the library",
+        },
+      ],
+      corrections: [],
+    },
+    {
+      analyzed: "Ich gehe in den Park.",
+      translation: "I'm going to the park.",
+      nouns: [
+        { word: "Park", article: "der", plural: "die Parks", english: "park" },
+      ],
+      verbs: [
+        {
+          infinitive: "gehen",
+          formInSentence: "gehe",
+          partizipII: "gegangen",
+          auxiliary: "sein",
+          english: "to go",
+          present: {
+            ich: "gehe",
+            du: "gehst",
+            erSieEs: "geht",
+            wir: "gehen",
+            ihr: "geht",
+            sie: "gehen",
+          },
+          praeteritum: {
+            ich: "ging",
+            du: "gingst",
+            erSieEs: "ging",
+            wir: "gingen",
+            ihr: "gingt",
+            sie: "gingen",
+          },
+        },
+      ],
+      breakdown: [
+        { part: "Ich", role: "Subjekt (Nominativ)", english: "I" },
+        { part: "gehe", role: "Prädikat", english: "am going" },
+        {
+          part: "in den Park",
+          role: "Lokaladverbial (Direktional)",
+          english: "to the park",
+        },
+      ],
+      corrections: [
+        {
+          original: "in dem Park",
+          suggested: "in den Park",
+          reason: "Direktional → Akkusativ",
+        },
+      ],
     },
   ],
-  verbs: [
-    {
-      infinitive: "bringen",
-      formInSentence: "hat ... gebracht",
-      partizipII: "gebracht",
-      auxiliary: "haben",
-      english: "to bring",
-      present: {
-        ich: "bringe",
-        du: "bringst",
-        erSieEs: "bringt",
-        wir: "bringen",
-        ihr: "bringt",
-        sie: "bringen",
-      },
-      praeteritum: {
-        ich: "brachte",
-        du: "brachtest",
-        erSieEs: "brachte",
-        wir: "brachten",
-        ihr: "brachtet",
-        sie: "brachten",
-      },
-    },
-  ],
-  breakdown: [
-    { part: "Der Mann", role: "Subjekt (Nominativ)", english: "the man" },
-    { part: "hat ... gebracht", role: "Prädikat", english: "brought" },
-    { part: "das Buch", role: "Akkusativobjekt", english: "the book" },
-    {
-      part: "in die Bibliothek",
-      role: "Lokaladverbial (Direktional)",
-      english: "to the library",
-    },
-  ],
-  corrections: [],
 };
 
 export default function App() {
+  const isFavoritesRoute =
+    typeof window !== "undefined" && window.location.pathname === "/favorites";
   const [sentence, setSentence] = useState(EXAMPLE_SENTENCE);
-  const [data, setData] = useState<Analysis | null>(EXAMPLE_ANALYSIS);
+  const [data, setData] = useState<MultiAnalysis | null>(EXAMPLE_ANALYSIS);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [count, setCount] = useState<number | null>(null);
@@ -203,6 +256,20 @@ export default function App() {
     return () => window.removeEventListener("keydown", onEsc);
   }, [error]);
 
+  if (isFavoritesRoute) {
+    return (
+      <div className="min-h-screen">
+        <Header count={count} />
+        <main
+          className="mx-auto px-6 sm:px-8 pb-16 w-full"
+          style={{ maxWidth: 1100, paddingTop: "clamp(20px, 4vw, 36px)" }}
+        >
+          <Favorites />
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <Header count={count} />
@@ -279,26 +346,7 @@ export default function App() {
             </div>
           )}
           {!loading && data && (
-            <div className="flex flex-col gap-8">
-              {data.corrections.length > 0 && (
-                <div className="mx-auto w-full" style={{ maxWidth: 640 }}>
-                  <Corrections items={data.corrections} />
-                </div>
-              )}
-              {data.breakdown.length > 0 && (
-                <div className="mx-auto w-full" style={{ maxWidth: 640 }}>
-                  <Breakdown
-                    items={data.breakdown}
-                    sentence={data.analyzed || data.sentence}
-                    translation={data.translation}
-                  />
-                </div>
-              )}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-                <NounsTable nouns={data.nouns} />
-                <VerbsTable verbs={data.verbs} />
-              </div>
-            </div>
+            <SentenceCarousel sentences={data.sentences} />
           )}
         </div>
 

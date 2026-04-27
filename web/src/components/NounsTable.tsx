@@ -1,6 +1,7 @@
 import type { Noun } from "../lib/types";
 import { ArticlePill } from "./ArticlePill";
 import { SectionLabel } from "./SectionLabel";
+import { StarButton } from "./StarButton";
 
 export function NounsTable({ nouns }: { nouns: Noun[] }) {
   if (nouns.length === 0) return null;
@@ -15,7 +16,7 @@ export function NounsTable({ nouns }: { nouns: Noun[] }) {
             key={i}
             className="card-row grid items-baseline"
             style={{
-              gridTemplateColumns: "auto 1fr auto",
+              gridTemplateColumns: "auto 1fr auto auto",
               columnGap: 12,
             }}
           >
@@ -51,6 +52,11 @@ export function NounsTable({ nouns }: { nouns: Noun[] }) {
             >
               {n.plural ?? "—"}
             </div>
+            <StarButton
+              kind="noun"
+              favKey={`${n.article}:${n.word}`}
+              payload={n}
+            />
           </div>
         ))}
       </div>

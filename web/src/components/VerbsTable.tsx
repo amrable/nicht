@@ -1,5 +1,6 @@
 import type { Verb } from "../lib/types";
 import { SectionLabel } from "./SectionLabel";
+import { StarButton } from "./StarButton";
 
 const PRONOUNS: Array<{ key: keyof Verb["present"]; label: string }> = [
   { key: "ich", label: "ich" },
@@ -86,7 +87,14 @@ export function VerbsTable({ verbs }: { verbs: Verb[] }) {
                   </span>
                 )}
               </div>
-              <AuxPill aux={v.auxiliary} />
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <AuxPill aux={v.auxiliary} />
+                <StarButton
+                  kind="verb"
+                  favKey={v.infinitive.toLowerCase()}
+                  payload={v}
+                />
+              </div>
             </div>
 
             <dl

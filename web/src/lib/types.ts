@@ -41,13 +41,34 @@ export type Correction = {
   reason: string;
 };
 
+export type AuthUser = {
+  id: string;
+  email: string;
+  name: string | null;
+  picture: string | null;
+};
+
+export type FavoriteKind = "noun" | "verb";
+
+export type Favorite = {
+  id: string;
+  kind: FavoriteKind;
+  key: string;
+  payload: Noun | Verb;
+  createdAt: string | number;
+};
+
 export type Analysis = {
-  id?: string;
-  sentence?: string;
   analyzed?: string;
   translation: string;
   nouns: Noun[];
   verbs: Verb[];
   breakdown: BreakdownItem[];
   corrections: Correction[];
+};
+
+export type MultiAnalysis = {
+  id?: string;
+  sentence?: string;
+  sentences: Analysis[];
 };

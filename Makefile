@@ -6,6 +6,7 @@ SSH_HOST  ?= root@89.167.12.249
 REMOTE    ?= /srv/nicht/app
 CF_PROJECT?= nicht-wtf
 API_URL   ?= https://api.satzbau.eu
+GOOGLE_CLIENT_ID ?= 626851268973-7fejh7pcni1tdkot948o6jf2n3r1i96m.apps.googleusercontent.com
 
 help:
 	@echo "Targets:"
@@ -92,7 +93,7 @@ deploy-api:
 
 deploy-web:
 	@echo "→ building web with VITE_API_URL=$(API_URL)"
-	cd web && VITE_API_URL=$(API_URL) npm run build
+	cd web && VITE_API_URL=$(API_URL) VITE_GOOGLE_CLIENT_ID=$(GOOGLE_CLIENT_ID) npm run build
 	@echo "→ deploying to Cloudflare Pages project '$(CF_PROJECT)'"
 	cd web && npx --yes wrangler pages deploy dist \
 		--project-name $(CF_PROJECT) \

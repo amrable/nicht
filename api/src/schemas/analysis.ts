@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const AnalyzeRequest = z.object({
-  sentence: z.string().trim().min(1).max(500),
+  sentence: z.string().trim().min(1).max(2000),
 });
 
 export const Noun = z.object({
@@ -49,7 +49,7 @@ export const Correction = z.object({
   reason: z.string(),
 });
 
-export const AnalysisResponse = z.object({
+export const SentenceAnalysis = z.object({
   analyzed: z.union([z.string(), z.null()]).transform((v) => v ?? "").default(""),
   translation: z.union([z.string(), z.null()]).transform((v) => v ?? ""),
   nouns: z.array(Noun).default([]),
@@ -58,4 +58,9 @@ export const AnalysisResponse = z.object({
   corrections: z.array(Correction).default([]),
 });
 
+export const AnalysisResponse = z.object({
+  sentences: z.array(SentenceAnalysis).default([]),
+});
+
+export type SentenceAnalysis = z.infer<typeof SentenceAnalysis>;
 export type Analysis = z.infer<typeof AnalysisResponse>;

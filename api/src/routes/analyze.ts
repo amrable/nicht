@@ -16,7 +16,7 @@ import { eq } from "drizzle-orm";
 export const analyzeRouter = Router();
 
 const ShareRequest = z.object({
-  sentence: z.string().trim().min(1).max(500),
+  sentence: z.string().trim().min(1).max(2000),
   analysis: AnalysisResponse,
 });
 
@@ -65,10 +65,15 @@ analyzeRouter.get("/shared/:id", async (req, res, next) => {
       res.status(404).json({ error: "Not found" });
       return;
     }
+    const parsedResult = JSON.parse(result.result);
+    const wrapped =
+      parsedResult && Array.isArray(parsedResult.sentences)
+        ? parsedResult
+        : { sentences: [parsedResult] };
     res.json({
       id: result.id,
       sentence: result.sentence,
-      ...JSON.parse(result.result),
+      ...wrapped,
     });
   } catch (err) {
     next(err);

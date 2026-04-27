@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://satzbau.eu/sitemap.xml
+Sitemap: https://satzbau.eu/sitemap_index.xml

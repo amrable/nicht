@@ -1,7 +1,10 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { analyzeRouter } from "./routes/analyze.js";
+import { authRouter } from "./routes/auth.js";
+import { favoritesRouter } from "./routes/favorites.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -11,8 +14,9 @@ const allowedOrigins = (process.env.ALLOWED_ORIGIN ?? "http://localhost:5173")
   .map((s) => s.trim())
   .filter(Boolean);
 
-app.use(cors({ origin: allowedOrigins }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json({ limit: "10kb" }));
+app.use(cookieParser());
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -34,6 +38,8 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.use("/api", analyzeRouter);
+app.use("/api", authRouter);
+app.use("/api", favoritesRouter);
 
 app.use(errorHandler);
 
