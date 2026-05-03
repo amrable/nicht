@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../lib/auth";
 
 export function UserMenu() {
-  const { user, logout } = useAuth();
+  const { user, logout, openLoginModal } = useAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -15,7 +15,28 @@ export function UserMenu() {
     return () => document.removeEventListener("mousedown", onClick);
   }, [open]);
 
-  if (!user) return null;
+  if (!user) {
+    return (
+      <button
+        type="button"
+        onClick={() => openLoginModal()}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          height: 22,
+          padding: "0 10px",
+          border: "1px solid var(--border)",
+          borderRadius: 999,
+          background: "transparent",
+          color: "var(--text)",
+          fontSize: 12.5,
+          cursor: "pointer",
+        }}
+      >
+        Sign in
+      </button>
+    );
+  }
 
   const initial = (user.name || user.email).charAt(0).toUpperCase();
 

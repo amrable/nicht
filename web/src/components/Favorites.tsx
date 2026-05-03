@@ -21,7 +21,7 @@ export function Favorites() {
         </p>
         <button
           type="button"
-          onClick={openLoginModal}
+          onClick={() => openLoginModal("favorites")}
           style={{
             marginTop: 12,
             padding: "8px 16px",

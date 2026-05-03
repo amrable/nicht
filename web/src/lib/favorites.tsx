@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { addFavorite, listFavorites, removeFavorite } from "./api";
+import { track } from "./analytics";
 import type { Favorite, FavoriteKind, Noun, Verb } from "./types";
 import { useAuth } from "./auth";
 
@@ -76,15 +77,12 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
           throw err;
         }
       } else {
-        try {
-          const { favorite } = await addFavorite(kind, key, payload);
-          setFavorites((rows) => {
-            if (rows.some((r) => r.id === favorite.id)) return rows;
-            return [favorite, ...rows];
-          });
-        } catch (err) {
-          throw err;
-        }
+        const { favorite } = await addFavorite(kind, key, payload);
+        track("favorite_added", { kind });
+        setFavorites((rows) => {
+          if (rows.some((r) => r.id === favorite.id)) return rows;
+          return [favorite, ...rows];
+        });
       }
     },
     [favorites, keySet],

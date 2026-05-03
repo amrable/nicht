@@ -145,3 +145,19 @@ textarea.textarea-bare:focus-visible {
 .carousel-scroller::-webkit-scrollbar {
   display: none;
 }
+
+/* Mobile bottom nav: hidden on desktop, shown on phone-sized viewports */
+.bottom-nav {
+  display: none;
+}
+@media (max-width: 640px) {
+  .bottom-nav {
+    display: block;
+  }
+  .header-links {
+    display: none !important;
+  }
+  .bottom-nav-spacer {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+}

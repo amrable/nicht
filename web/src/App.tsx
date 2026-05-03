@@ -4,8 +4,10 @@ import { SentenceCarousel } from "./components/SentenceCarousel";
 import { LoadingSkeleton } from "./components/LoadingSkeleton";
 import { ErrorBanner } from "./components/ErrorBanner";
 import Header from "./components/Header";
+import { BottomNav } from "./components/BottomNav";
 import { Favorites } from "./components/Favorites";
 import { analyzeSentence, fetchSharedAnalysis, fetchStats, messageForError, shareAnalysis } from "./lib/api";
+import { track } from "./lib/analytics";
 import type { MultiAnalysis } from "./lib/types";
 
 const EXAMPLE_SENTENCE =
@@ -126,6 +128,7 @@ const EXAMPLE_ANALYSIS: MultiAnalysis = {
           original: "in dem Park",
           suggested: "in den Park",
           reason: "Direktional → Akkusativ",
+          guide: "two-way-prepositions",
         },
       ],
     },
@@ -154,6 +157,7 @@ export default function App() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("shared");
     if (id) {
+      track("shared_view", { share_id: id });
       setLoading(true);
       fetchSharedAnalysis(id)
         .then((result) => {
@@ -168,6 +172,13 @@ export default function App() {
     refreshCount();
   }, []);
 
+  useEffect(() => {
+    const fire = () => track("page_view", { path: window.location.pathname });
+    fire();
+    window.addEventListener("popstate", fire);
+    return () => window.removeEventListener("popstate", fire);
+  }, []);
+
   const onAnalyze = async () => {
     const trimmed = sentence.trim();
     if (!trimmed) return;
@@ -177,6 +188,10 @@ export default function App() {
     try {
       const result = await analyzeSentence(trimmed);
       setData(result);
+      track("sentence_analyzed", {
+        char_length: trimmed.length,
+        word_count: trimmed.split(/\s+/).filter(Boolean).length,
+      });
       refreshCount();
     } catch (err) {
       setError(messageForError(err));
@@ -231,6 +246,7 @@ export default function App() {
     setSharing(true);
     try {
       const { id } = await shareAnalysis(sentence.trim(), data);
+      track("share_created", { share_id: id });
       setData({ ...data, id });
       const url = `${window.location.origin}?shared=${id}`;
       const copied = await copyToClipboard(url);
@@ -258,7 +274,7 @@ export default function App() {
 
   if (isFavoritesRoute) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bottom-nav-spacer">
         <Header count={count} />
         <main
           className="mx-auto px-6 sm:px-8 pb-16 w-full"
@@ -266,12 +282,13 @@ export default function App() {
         >
           <Favorites />
         </main>
+        <BottomNav />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bottom-nav-spacer">
       <Header count={count} />
       <main
         lang="de"
@@ -439,6 +456,7 @@ export default function App() {
           </dl>
         </section>
       </main>
+      <BottomNav />
     </div>
   );
 }

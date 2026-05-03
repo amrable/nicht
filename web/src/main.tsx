@@ -5,7 +5,10 @@ import App from "./App";
 import { AuthProvider } from "./lib/auth";
 import { FavoritesProvider } from "./lib/favorites";
 import { LoginModal } from "./components/LoginModal";
+import { initAnalytics } from "./lib/analytics";
 import "./index.css";
+
+initAnalytics();
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? "";
 

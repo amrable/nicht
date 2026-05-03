@@ -35,10 +35,36 @@ export type BreakdownItem = {
   english: string;
 };
 
+export type GuideSlug =
+  | "accusative-vs-dative"
+  | "der-die-das"
+  | "german-cases"
+  | "german-plurals"
+  | "german-word-order"
+  | "haben-or-sein"
+  | "modal-verbs"
+  | "partizip-2"
+  | "strong-verbs"
+  | "two-way-prepositions";
+
+export const GUIDE_TITLES: Record<GuideSlug, string> = {
+  "accusative-vs-dative": "Accusative vs dative",
+  "der-die-das": "der, die, or das",
+  "german-cases": "The four German cases",
+  "german-plurals": "German plural rules",
+  "german-word-order": "German word order (Satzbau)",
+  "haben-or-sein": "Haben or sein?",
+  "modal-verbs": "German modal verbs",
+  "partizip-2": "Partizip II",
+  "strong-verbs": "Strong & irregular verbs",
+  "two-way-prepositions": "Two-way prepositions",
+};
+
 export type Correction = {
   original: string;
   suggested: string;
   reason: string;
+  guide?: GuideSlug | null;
 };
 
 export type AuthUser = {

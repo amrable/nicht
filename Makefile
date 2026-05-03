@@ -93,7 +93,8 @@ deploy-api:
 
 deploy-web:
 	@echo "→ building web with VITE_API_URL=$(API_URL)"
-	cd web && VITE_API_URL=$(API_URL) VITE_GOOGLE_CLIENT_ID=$(GOOGLE_CLIENT_ID) npm run build
+	cd web && set -a && . ./.env && set +a && \
+		VITE_API_URL=$(API_URL) VITE_GOOGLE_CLIENT_ID=$(GOOGLE_CLIENT_ID) npm run build
 	@echo "→ deploying to Cloudflare Pages project '$(CF_PROJECT)'"
 	cd web && npx --yes wrangler pages deploy dist \
 		--project-name $(CF_PROJECT) \

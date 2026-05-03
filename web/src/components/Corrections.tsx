@@ -1,4 +1,5 @@
 import type { Correction } from "../lib/types";
+import { GUIDE_TITLES } from "../lib/types";
 import { SectionLabel } from "./SectionLabel";
 
 export function Corrections({ items }: { items: Correction[] }) {
@@ -67,6 +68,29 @@ export function Corrections({ items }: { items: Correction[] }) {
               >
                 {c.reason}
               </div>
+            )}
+            {c.guide && GUIDE_TITLES[c.guide] && (
+              <a
+                href={`/guides/${c.guide}.html`}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  marginTop: 10,
+                  padding: "6px 10px",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "var(--accent, #2563EB)",
+                  background: "var(--accent-soft, rgba(37, 99, 235, 0.12))",
+                  border: "1px solid var(--accent-border, rgba(37, 99, 235, 0.35))",
+                  borderRadius: 999,
+                  textDecoration: "none",
+                }}
+              >
+                <span aria-hidden="true">📖</span>
+                <span>Lerne mehr: {GUIDE_TITLES[c.guide]}</span>
+                <span aria-hidden="true">→</span>
+              </a>
             )}
           </div>
         ))}

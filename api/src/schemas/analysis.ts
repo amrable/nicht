@@ -43,10 +43,31 @@ export const BreakdownItem = z.object({
   english: z.string().default(""),
 });
 
+export const GuideSlug = z.enum([
+  "accusative-vs-dative",
+  "der-die-das",
+  "german-cases",
+  "german-plurals",
+  "german-word-order",
+  "haben-or-sein",
+  "modal-verbs",
+  "partizip-2",
+  "strong-verbs",
+  "two-way-prepositions",
+]);
+
 export const Correction = z.object({
   original: z.string(),
   suggested: z.string(),
   reason: z.string(),
+  guide: z
+    .union([GuideSlug, z.string(), z.null()])
+    .optional()
+    .transform((v) => {
+      if (!v) return null;
+      const parsed = GuideSlug.safeParse(v);
+      return parsed.success ? parsed.data : null;
+    }),
 });
 
 export const SentenceAnalysis = z.object({

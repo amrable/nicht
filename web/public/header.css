@@ -1,25 +1,138 @@
 /*
   Shared header styles for satzbau.eu
   Include with: <link rel="stylesheet" href="/header.css">
+
+  Falls back through both token sets so it adapts to dark mode in
+  both the React app (--surface/--text/--hairline) and the static
+  guide pages (--card/--fg/--border).
 */
 
 .site-header {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 18px 24px 0;
-  display: flex;
-  justify-content: flex-end;
-  gap: 18px;
-  font-size: 12.5px;
-  color: var(--muted, #64748b);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(
+    in srgb,
+    var(--surface, var(--card, #ffffff)) 80%,
+    transparent
+  );
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--hairline, var(--border, rgba(15, 23, 42, 0.08)));
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
+.site-header__inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+  font-size: 12.5px;
+  color: var(--text-muted, var(--muted, #64748b));
+}
+
 .site-header a {
-  color: var(--fg, #0f172a);
+  color: var(--text, var(--fg, #0f172a));
   text-decoration: none;
 }
 
 .site-header a:hover {
   opacity: 0.8;
+}
+
+.site-header__signin {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border: 1px solid var(--border, rgba(15, 23, 42, 0.12));
+  border-radius: 999px;
+  font-size: 12.5px;
+}
+
+.site-header__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.site-header__avatar img {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: block;
+}
+
+.site-header__avatar--initial {
+  background: var(--border, #e2e8f0);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Mobile bottom nav (static pages) */
+.site-header__links {
+  display: contents;
+}
+
+.site-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .site-header__links {
+    display: none !important;
+  }
+
+  .site-bottom-nav {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background: color-mix(
+      in srgb,
+      var(--surface, var(--card, #ffffff)) 92%,
+      transparent
+    );
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--hairline, var(--border, rgba(15, 23, 42, 0.08)));
+    padding-top: 8px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .site-bottom-nav__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 48px;
+    padding: 4px 6px;
+    text-decoration: none;
+    color: var(--text-muted, var(--muted, #64748b));
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .site-bottom-nav__item--active {
+    color: var(--accent, var(--text, var(--fg, #0f172a)));
+    font-weight: 600;
+  }
+
+  body.has-site-bottom-nav {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
 }
