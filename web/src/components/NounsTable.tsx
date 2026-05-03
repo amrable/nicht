@@ -1,6 +1,7 @@
 import type { Noun } from "../lib/types";
 import { ArticlePill } from "./ArticlePill";
 import { SectionLabel } from "./SectionLabel";
+import { SpeakButton } from "./SpeakButton";
 import { StarButton } from "./StarButton";
 
 export function NounsTable({ nouns }: { nouns: Noun[] }) {
@@ -14,7 +15,7 @@ export function NounsTable({ nouns }: { nouns: Noun[] }) {
         {nouns.map((n, i) => (
           <div
             key={i}
-            className="card-row grid items-baseline"
+            className="card-row grid items-center"
             style={{
               gridTemplateColumns: "auto 1fr auto auto",
               columnGap: 12,
@@ -28,9 +29,17 @@ export function NounsTable({ nouns }: { nouns: Noun[] }) {
                   fontWeight: 500,
                   color: "var(--text)",
                   lineHeight: 1.4,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 2,
                 }}
               >
-                {n.word}
+                <span>{n.word}</span>
+                <SpeakButton
+                  text={`${n.article} ${n.word}`}
+                  label={`${n.article} ${n.word} vorlesen`}
+                  size={13}
+                />
               </div>
               {n.english && (
                 <div
@@ -48,9 +57,23 @@ export function NounsTable({ nouns }: { nouns: Noun[] }) {
             </div>
             <div
               className="tabnum text-right"
-              style={{ fontSize: 13, color: "var(--text-muted)" }}
+              style={{
+                fontSize: 13,
+                color: "var(--text-muted)",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                gap: 2,
+              }}
             >
-              {n.plural ?? "—"}
+              <span>{n.plural ?? "—"}</span>
+              {n.plural && (
+                <SpeakButton
+                  text={n.plural}
+                  label={`${n.plural} vorlesen`}
+                  size={13}
+                />
+              )}
             </div>
             <StarButton
               kind="noun"

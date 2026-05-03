@@ -1,5 +1,6 @@
 import type { Verb } from "../lib/types";
 import { SectionLabel } from "./SectionLabel";
+import { SpeakButton } from "./SpeakButton";
 import { StarButton } from "./StarButton";
 
 const PRONOUNS: Array<{ key: keyof Verb["present"]; label: string }> = [
@@ -10,6 +11,17 @@ const PRONOUNS: Array<{ key: keyof Verb["present"]; label: string }> = [
   { key: "ihr", label: "ihr" },
   { key: "sie", label: "sie / Sie" },
 ];
+
+function spokenPronoun(key: keyof Verb["present"]): string {
+  switch (key) {
+    case "erSieEs":
+      return "er";
+    case "sie":
+      return "sie";
+    default:
+      return key;
+  }
+}
 
 const META_LABEL: React.CSSProperties = {
   fontSize: 11,
@@ -89,6 +101,10 @@ export function VerbsTable({ verbs }: { verbs: Verb[] }) {
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <AuxPill aux={v.auxiliary} />
+                <SpeakButton
+                  text={v.infinitive}
+                  label={`${v.infinitive} vorlesen`}
+                />
                 <StarButton
                   kind="verb"
                   favKey={v.infinitive.toLowerCase()}
@@ -107,12 +123,40 @@ export function VerbsTable({ verbs }: { verbs: Verb[] }) {
               }}
             >
               <dt style={META_LABEL}>Im Satz</dt>
-              <dd style={{ fontSize: 13.5, color: "var(--text)", margin: 0 }}>
-                {v.formInSentence}
+              <dd
+                style={{
+                  fontSize: 13.5,
+                  color: "var(--text)",
+                  margin: 0,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                }}
+              >
+                <span>{v.formInSentence}</span>
+                <SpeakButton
+                  text={v.formInSentence.replace(/\.\.\./g, " ")}
+                  label={`${v.formInSentence} vorlesen`}
+                  size={13}
+                />
               </dd>
               <dt style={META_LABEL}>Partizip II</dt>
-              <dd style={{ fontSize: 13.5, color: "var(--text)", margin: 0 }}>
-                {v.partizipII}
+              <dd
+                style={{
+                  fontSize: 13.5,
+                  color: "var(--text)",
+                  margin: 0,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                }}
+              >
+                <span>{v.partizipII}</span>
+                <SpeakButton
+                  text={v.partizipII}
+                  label={`${v.partizipII} vorlesen`}
+                  size={13}
+                />
               </dd>
             </dl>
 
@@ -155,21 +199,26 @@ function Conjugation({
       <dl
         style={{
           display: "grid",
-          gridTemplateColumns: "auto 1fr",
+          gridTemplateColumns: "auto 1fr auto",
           columnGap: 10,
           rowGap: 3,
           marginTop: 6,
           fontSize: 13.5,
         }}
       >
-        {PRONOUNS.map(({ key, label }) => (
-          <div key={key} style={{ display: "contents" }}>
-            <dt className="tabnum" style={{ color: "var(--text-muted)" }}>
-              {label}
-            </dt>
-            <dd style={{ color: "var(--text)", margin: 0 }}>{rows[key]}</dd>
-          </div>
-        ))}
+        {PRONOUNS.map(({ key, label }) => {
+          const form = rows[key];
+          const spoken = `${spokenPronoun(key)} ${form}`;
+          return (
+            <div key={key} style={{ display: "contents" }}>
+              <dt className="tabnum" style={{ color: "var(--text-muted)" }}>
+                {label}
+              </dt>
+              <dd style={{ color: "var(--text)", margin: 0 }}>{form}</dd>
+              <SpeakButton text={spoken} label={`${spoken} vorlesen`} size={13} />
+            </div>
+          );
+        })}
       </dl>
     </div>
   );

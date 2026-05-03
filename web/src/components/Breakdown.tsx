@@ -1,5 +1,6 @@
 import type { BreakdownItem } from "../lib/types";
 import { SectionLabel } from "./SectionLabel";
+import { SpeakButton } from "./SpeakButton";
 
 export function Breakdown({
   items,
@@ -17,17 +18,29 @@ export function Breakdown({
         <span id="sec-aufbau">Aufbau</span>
       </SectionLabel>
       {sentence && (
-        <p
+        <div
           style={{
-            fontSize: 15,
-            fontWeight: 500,
-            color: "var(--text)",
-            lineHeight: 1.45,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
             margin: "0 0 2px",
           }}
         >
-          {sentence}
-        </p>
+          <p
+            style={{
+              fontSize: 15,
+              fontWeight: 500,
+              color: "var(--text)",
+              lineHeight: 1.45,
+              margin: 0,
+              flex: 1,
+              minWidth: 0,
+            }}
+          >
+            {sentence}
+          </p>
+          <SpeakButton text={sentence} label="Satz vorlesen" />
+        </div>
       )}
       {translation && (
         <p
