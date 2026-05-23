@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { analyzeRouter } from "./routes/analyze.js";
 import { authRouter } from "./routes/auth.js";
 import { favoritesRouter } from "./routes/favorites.js";
+import { learnedRouter } from "./routes/learned.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -40,6 +41,7 @@ app.get("/api/health", (_req, res) => {
 app.use("/api", analyzeRouter);
 app.use("/api", authRouter);
 app.use("/api", favoritesRouter);
+app.use("/api", learnedRouter);
 
 app.use(errorHandler);
 

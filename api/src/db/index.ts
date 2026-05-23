@@ -33,4 +33,13 @@ sqlite.exec(`
   );
   CREATE UNIQUE INDEX IF NOT EXISTS favorites_user_kind_key
     ON favorites(user_id, kind, key);
+
+  CREATE TABLE IF NOT EXISTS learned_sentences (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id),
+    sentence_id INTEGER NOT NULL,
+    created_at INTEGER NOT NULL
+  );
+  CREATE UNIQUE INDEX IF NOT EXISTS learned_sentences_user_sentence
+    ON learned_sentences(user_id, sentence_id);
 `);

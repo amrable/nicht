@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Analysis } from "../lib/types";
 import { SentenceCarousel } from "./SentenceCarousel";
+import { useLearned } from "../lib/learned";
 
 type Entry = { id: number; slug: string; sentence: string; analysis: { sentences: Analysis[] } };
 
@@ -17,6 +18,8 @@ export function CommonDetail({ slug }: { slug: string }) {
       .then((data: Entry[]) => setEntries(data))
       .catch(() => setError("Could not load sentence."));
   }, []);
+
+  const { isLearned, toggle } = useLearned();
 
   const index = entries?.findIndex((e) => e.slug === slug) ?? -1;
   const entry = index >= 0 ? entries![index] : null;
@@ -51,19 +54,41 @@ export function CommonDetail({ slug }: { slug: string }) {
         )}
 
         {entry && (
-          <h1
-            lang="de"
-            style={{
-              fontSize: 22,
-              fontWeight: 600,
-              lineHeight: 1.3,
-              letterSpacing: "-0.01em",
-              color: "var(--text)",
-              margin: 0,
-            }}
-          >
-            {entry.sentence}
-          </h1>
+          <>
+            <h1
+              lang="de"
+              style={{
+                fontSize: 22,
+                fontWeight: 600,
+                lineHeight: 1.3,
+                letterSpacing: "-0.01em",
+                color: "var(--text)",
+                margin: 0,
+              }}
+            >
+              {entry.sentence}
+            </h1>
+            <button
+              onClick={() => toggle(entry.id)}
+              style={{
+                marginTop: 12,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "6px 14px",
+                borderRadius: 8,
+                border: isLearned(entry.id) ? "none" : "1px solid var(--border)",
+                background: isLearned(entry.id) ? "var(--learned-bg)" : "var(--surface)",
+                color: isLearned(entry.id) ? "var(--learned-fg)" : "var(--text-muted)",
+                fontSize: 13,
+                fontFamily: "inherit",
+                cursor: "pointer",
+                transition: "background 0.15s, color 0.15s",
+              }}
+            >
+              ✓ {isLearned(entry.id) ? "Learned" : "Mark as learned"}
+            </button>
+          </>
         )}
       </div>
 

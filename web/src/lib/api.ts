@@ -121,6 +121,22 @@ export function removeFavorite(
   return authFetch(`/api/favorites?${params.toString()}`, { method: "DELETE" });
 }
 
+export function listLearned(): Promise<{ learnedIds: number[] }> {
+  return authFetch("/api/learned");
+}
+
+export function markLearned(sentenceId: number): Promise<{ ok: true }> {
+  return authFetch("/api/learned", {
+    method: "POST",
+    body: JSON.stringify({ sentenceId }),
+  });
+}
+
+export function unmarkLearned(sentenceId: number): Promise<{ ok: true; removed: number }> {
+  const params = new URLSearchParams({ sentenceId: String(sentenceId) });
+  return authFetch(`/api/learned?${params.toString()}`, { method: "DELETE" });
+}
+
 export function messageForError(err: unknown): string {
   if (err instanceof ApiError) {
     if (err.status === 0) return "Verbindung fehlgeschlagen. Bitte erneut versuchen.";

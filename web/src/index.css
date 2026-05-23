@@ -34,6 +34,8 @@
   --haben-bg: #ecfdf5; --haben-fg: #065f46;
   --sein-bg:  #eef2ff; --sein-fg:  #3730a3;
 
+  --learned-bg: #16a34a; --learned-fg: #ffffff;
+
   --warn-bg: #fffbeb; --warn-border: #fde68a; --warn-text: #92400e;
   --error-bg: #fef2f2; --error-border: #fecaca; --error-text: #991b1b;
 
@@ -68,6 +70,8 @@
 
     --haben-bg: #065f464d; --haben-fg: #a7f3d0;
     --sein-bg:  #3730a34d; --sein-fg:  #c7d2fe;
+
+    --learned-bg: #166534; --learned-fg: #bbf7d0;
 
     --warn-bg: #451a034d; --warn-border: #92400e; --warn-text: #fde68a;
     --error-bg: #450a0a4d; --error-border: #7f1d1d; --error-text: #fecaca;

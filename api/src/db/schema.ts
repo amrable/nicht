@@ -20,6 +20,23 @@ export const users = sqliteTable("users", {
     .$defaultFn(() => new Date()),
 });
 
+export const learnedSentences = sqliteTable(
+  "learned_sentences",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    sentenceId: integer("sentence_id").notNull(),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+  },
+  (t) => ({
+    uniq: uniqueIndex("learned_sentences_user_sentence").on(t.userId, t.sentenceId),
+  }),
+);
+
 export const favorites = sqliteTable(
   "favorites",
   {

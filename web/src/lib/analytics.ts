@@ -10,6 +10,7 @@ type EventProps = {
   share_created: { share_id: string };
   shared_view: { share_id: string };
   favorite_added: { kind: "noun" | "verb" };
+  sentence_learned: { sentenceId: number };
 };
 
 type EventName = keyof EventProps;
