@@ -60,11 +60,7 @@ export function Breakdown({
         {items.map((b, i) => (
           <div
             key={i}
-            className="card-row grid items-baseline"
-            style={{
-              gridTemplateColumns: "1fr auto",
-              columnGap: 16,
-            }}
+            className="card-row grid items-baseline breakdown-row"
           >
             <div className="min-w-0">
               <div
@@ -73,6 +69,7 @@ export function Breakdown({
                   fontWeight: 500,
                   color: "var(--text)",
                   lineHeight: 1.4,
+                  overflowWrap: "anywhere",
                 }}
               >
                 {b.part}
@@ -85,6 +82,7 @@ export function Breakdown({
                     color: "var(--text-muted)",
                     fontStyle: "italic",
                     marginTop: 1,
+                    overflowWrap: "anywhere",
                   }}
                 >
                   {b.english}
@@ -92,8 +90,13 @@ export function Breakdown({
               )}
             </div>
             <span
-              className="text-right shrink-0"
-              style={{ fontSize: 13, color: "var(--text-muted)" }}
+              className="breakdown-role"
+              style={{
+                fontSize: 13,
+                color: "var(--text-muted)",
+                minWidth: 0,
+                overflowWrap: "anywhere",
+              }}
             >
               {b.role}
             </span>

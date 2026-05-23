@@ -26,6 +26,9 @@ export function initAnalytics() {
   mixpanel.init(token, {
     track_pageview: false,
     persistence: "localStorage",
+    record_sessions_percent: 100,
+    record_mask_text_selector: ".__nw_never_match__",
+    record_block_selector: ".__nw_never_match__",
     ignore_dnt: true,
     ...(apiHost ? { api_host: apiHost } : {}),
   });

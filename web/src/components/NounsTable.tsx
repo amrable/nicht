@@ -15,11 +15,7 @@ export function NounsTable({ nouns }: { nouns: Noun[] }) {
         {nouns.map((n, i) => (
           <div
             key={i}
-            className="card-row grid items-center"
-            style={{
-              gridTemplateColumns: "auto 1fr auto auto",
-              columnGap: 12,
-            }}
+            className="card-row grid items-center nouns-row"
           >
             <ArticlePill article={n.article} />
             <div className="min-w-0">
@@ -34,7 +30,7 @@ export function NounsTable({ nouns }: { nouns: Noun[] }) {
                   gap: 2,
                 }}
               >
-                <span>{n.word}</span>
+                <span style={{ overflowWrap: "anywhere" }}>{n.word}</span>
                 <SpeakButton
                   text={`${n.article} ${n.word}`}
                   label={`${n.article} ${n.word} vorlesen`}
@@ -64,9 +60,10 @@ export function NounsTable({ nouns }: { nouns: Noun[] }) {
                 alignItems: "center",
                 justifyContent: "flex-end",
                 gap: 2,
+                minWidth: 0,
               }}
             >
-              <span>{n.plural ?? "—"}</span>
+              <span style={{ overflowWrap: "anywhere" }}>{n.plural ?? "—"}</span>
               {n.plural && (
                 <SpeakButton
                   text={n.plural}

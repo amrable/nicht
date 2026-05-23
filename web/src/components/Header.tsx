@@ -31,10 +31,9 @@ export default function Header({ count }: HeaderProps) {
           color: "var(--text-muted)",
         }}
       >
-        {count !== null && count !== undefined && (
-          <span>
-            {/* translated {count.toLocaleString()} sentence
-            {count === 1 ? "" : "s"} */}
+        {count != null && count > 0 && (
+          <span style={{ color: "var(--text-faint)", fontSize: 12 }}>
+            {count.toLocaleString()} sentences analyzed
           </span>
         )}
         <span
@@ -43,6 +42,9 @@ export default function Header({ count }: HeaderProps) {
         >
           <a href="/" style={{ color: "var(--text)", textDecoration: "none" }}>
             Home
+          </a>
+          <a href="/common" style={{ color: "var(--text)", textDecoration: "none" }}>
+            Common
           </a>
           <a href="/guides" style={{ color: "var(--text)", textDecoration: "none" }}>
             Guides

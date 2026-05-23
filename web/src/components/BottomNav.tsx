@@ -22,15 +22,14 @@ const ITEMS: Item[] = [
     ),
   },
   {
-    href: "/guides",
-    label: "Guides",
-    match: (p) => p.startsWith("/guides"),
+    href: "/common",
+    label: "Common",
+    match: (p) => p.startsWith("/common"),
     icon: (
       <svg width={ICON_SIZE} height={ICON_SIZE} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M4 4h11a3 3 0 0 1 3 3v13" />
-        <path d="M4 4v14a2 2 0 0 0 2 2h12" />
-        <path d="M8 8h6" />
-        <path d="M8 12h6" />
+        <path d="M4 6h16" />
+        <path d="M4 12h16" />
+        <path d="M4 18h10" />
       </svg>
     ),
   },

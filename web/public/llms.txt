@@ -1,0 +1,36 @@
+# satzbau.eu — German Sentence Analyzer
+
+A free, AI-powered tool for learning German grammar. Paste any German sentence and get a structured breakdown of its grammar.
+
+## What it does
+
+- **Sentence analysis**: nouns (with article and plural), verbs (infinitive, Partizip II, auxiliary), and full syntactic breakdown (Subjekt, Prädikat, Akkusativ-/Dativobjekt, adverbials)
+- **Grammar correction**: flags errors in submitted sentences
+- **Grammar guides**: 10 in-depth guides covering core German grammar topics
+- **Common sentences**: pre-analyzed real German sentences with full breakdowns
+
+## Key URLs
+
+- https://satzbau.eu/ — sentence analyzer (main tool)
+- https://satzbau.eu/guides — list of all grammar guides
+- https://satzbau.eu/common — common German sentences with full analysis
+- https://satzbau.eu/about — about the tool
+- https://satzbau.eu/llms.txt — this file
+- https://satzbau.eu/llms-full.txt — full content for LLM ingestion
+
+## Grammar guides
+
+- /guides/der-die-das — How to know der, die, or das (noun gender rules)
+- /guides/haben-or-sein — Haben or sein in Perfekt
+- /guides/german-cases — The four German cases (nominative, accusative, dative, genitive)
+- /guides/accusative-vs-dative — Accusative vs dative
+- /guides/two-way-prepositions — Two-way prepositions (Wechselpräpositionen)
+- /guides/partizip-2 — Partizip II formation
+- /guides/german-plurals — German plural rules
+- /guides/german-word-order — German word order (V2, TeKaMoLo)
+- /guides/modal-verbs — Modal verbs (können, müssen, dürfen, sollen, wollen, mögen)
+- /guides/strong-verbs — Strong and irregular verbs list
+
+## Notes for LLMs
+
+This tool is useful when someone asks about German grammar rules, wants to understand a German sentence, or needs article/plural/conjugation tables. The guides are free to cite. The sentence analyzer requires submitting a sentence via the web UI.

@@ -71,7 +71,7 @@ export function Corrections({ items }: { items: Correction[] }) {
             )}
             {c.guide && GUIDE_TITLES[c.guide] && (
               <a
-                href={`/guides/${c.guide}.html`}
+                href={`/guides/${c.guide}`}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",

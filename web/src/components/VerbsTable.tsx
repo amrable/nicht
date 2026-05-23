@@ -79,10 +79,10 @@ export function VerbsTable({ verbs }: { verbs: Verb[] }) {
               }}
             >
               <div
-                style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}
+                style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap", minWidth: 0, flex: 1 }}
               >
                 <span
-                  style={{ fontSize: 16, fontWeight: 600, color: "var(--text)" }}
+                  style={{ fontSize: 16, fontWeight: 600, color: "var(--text)", overflowWrap: "anywhere" }}
                 >
                   {v.infinitive}
                 </span>
@@ -93,13 +93,14 @@ export function VerbsTable({ verbs }: { verbs: Verb[] }) {
                       fontSize: 13,
                       color: "var(--text-muted)",
                       fontStyle: "italic",
+                      overflowWrap: "anywhere",
                     }}
                   >
                     {v.english}
                   </span>
                 )}
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
                 <AuxPill aux={v.auxiliary} />
                 <SpeakButton
                   text={v.infinitive}
@@ -116,7 +117,7 @@ export function VerbsTable({ verbs }: { verbs: Verb[] }) {
             <dl
               style={{
                 display: "grid",
-                gridTemplateColumns: "auto 1fr",
+                gridTemplateColumns: "auto minmax(0, 1fr)",
                 columnGap: 14,
                 rowGap: 4,
                 marginTop: 10,
@@ -131,9 +132,10 @@ export function VerbsTable({ verbs }: { verbs: Verb[] }) {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 4,
+                  minWidth: 0,
                 }}
               >
-                <span>{v.formInSentence}</span>
+                <span style={{ overflowWrap: "anywhere" }}>{v.formInSentence}</span>
                 <SpeakButton
                   text={v.formInSentence.replace(/\.\.\./g, " ")}
                   label={`${v.formInSentence} vorlesen`}
@@ -149,9 +151,10 @@ export function VerbsTable({ verbs }: { verbs: Verb[] }) {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 4,
+                  minWidth: 0,
                 }}
               >
-                <span>{v.partizipII}</span>
+                <span style={{ overflowWrap: "anywhere" }}>{v.partizipII}</span>
                 <SpeakButton
                   text={v.partizipII}
                   label={`${v.partizipII} vorlesen`}
@@ -162,12 +165,11 @@ export function VerbsTable({ verbs }: { verbs: Verb[] }) {
 
             {(v.present || v.praeteritum) && (
               <div
+                className="conjugation-grid"
                 style={{
                   marginTop: 12,
                   paddingTop: 12,
                   borderTop: "1px solid var(--hairline)",
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
                   gap: 16,
                 }}
               >
@@ -199,7 +201,7 @@ function Conjugation({
       <dl
         style={{
           display: "grid",
-          gridTemplateColumns: "auto 1fr auto",
+          gridTemplateColumns: "auto minmax(0, 1fr) auto",
           columnGap: 10,
           rowGap: 3,
           marginTop: 6,
@@ -214,7 +216,7 @@ function Conjugation({
               <dt className="tabnum" style={{ color: "var(--text-muted)" }}>
                 {label}
               </dt>
-              <dd style={{ color: "var(--text)", margin: 0 }}>{form}</dd>
+              <dd style={{ color: "var(--text)", margin: 0, minWidth: 0, overflowWrap: "anywhere" }}>{form}</dd>
               <SpeakButton text={spoken} label={`${spoken} vorlesen`} size={13} />
             </div>
           );
