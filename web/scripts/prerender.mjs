@@ -283,7 +283,18 @@ function aboutMeta() {
 
 // --- run ---
 
+function analyzeMeta() {
+  return {
+    path: "/analyze",
+    title: "Analyze a German sentence — Satzbau",
+    description:
+      "Paste any German sentence and get a full grammatical breakdown: word order, cases, noun gender, verb conjugation, and instant error correction.",
+    contentHtml: `<main><h1>Analyze a German sentence</h1><p>Paste any sentence to see word order, cases, noun gender, verb conjugation, and grammar corrections.</p></main>`,
+  };
+}
+
 const pages = [
+  analyzeMeta(),
   commonListMeta(),
   ...commonSentences.map((e, i) => commonDetailMeta(e, i, commonSentences)),
   guidesListMeta(),

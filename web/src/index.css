@@ -150,10 +150,6 @@ textarea.textarea-bare:focus-visible {
   display: none;
 }
 
-/* Mobile bottom nav: hidden on desktop, shown on phone-sized viewports */
-.bottom-nav {
-  display: none;
-}
 /* Präsens / Präteritum conjugation columns */
 .conjugation-grid {
   display: grid;
@@ -177,16 +173,6 @@ textarea.textarea-bare:focus-visible {
 }
 
 @media (max-width: 640px) {
-  .bottom-nav {
-    display: block;
-  }
-  .header-links {
-    display: none !important;
-  }
-  .bottom-nav-spacer {
-    padding-bottom: calc(72px + env(safe-area-inset-bottom));
-  }
-
   /* Stack role below the German part */
   .breakdown-row {
     grid-template-columns: 1fr;

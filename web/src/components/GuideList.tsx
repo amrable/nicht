@@ -2,12 +2,28 @@ import { useEffect, useState } from "react";
 
 type Guide = { slug: string; title: string; summary: string; body: string; cefr: string };
 
+const CEFR_ORDER = ["A1", "A2", "B1", "B2", "C1", "C2"];
+
 const cefrColor: Record<string, string> = {
   A1: "#16a34a",
   A2: "#2563eb",
   B1: "#7c3aed",
   B2: "#b45309",
+  C1: "#be185d",
+  C2: "#0f172a",
 };
+
+function groupByCefr(guides: Guide[]): { level: string; guides: Guide[] }[] {
+  const sorted = [...guides].sort(
+    (a, b) => CEFR_ORDER.indexOf(a.cefr) - CEFR_ORDER.indexOf(b.cefr),
+  );
+  const map = new Map<string, Guide[]>();
+  for (const g of sorted) {
+    if (!map.has(g.cefr)) map.set(g.cefr, []);
+    map.get(g.cefr)!.push(g);
+  }
+  return [...map.entries()].map(([level, guides]) => ({ level, guides }));
+}
 
 export function GuideList() {
   const [guides, setGuides] = useState<Guide[] | null>(null);
@@ -59,74 +75,80 @@ export function GuideList() {
       )}
 
       {guides && (
-        <ul
-          style={{
-            marginTop: 20,
-            padding: 0,
-            listStyle: "none",
-            display: "flex",
-            flexDirection: "column",
-            gap: 8,
-          }}
-        >
-          {guides.map((g) => (
-            <li key={g.slug}>
-              <a
-                href={`/guides/${g.slug}`}
-                className="focus-ring"
+        <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 28 }}>
+          {groupByCefr(guides).map(({ level, guides: group }) => (
+            <section key={level}>
+              <div
                 style={{
-                  display: "block",
-                  padding: "14px 16px",
-                  borderRadius: 8,
-                  border: "1px solid var(--hairline)",
-                  background: "var(--surface)",
-                  textDecoration: "none",
-                  color: "var(--text)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  marginBottom: 10,
                 }}
               >
                 <span
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                    color: cefrColor[level] ?? "#64748b",
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      color: cefrColor[g.cefr] ?? "#64748b",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {g.cefr}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 500,
-                      lineHeight: 1.4,
-                    }}
-                  >
-                    {g.title}
-                  </span>
+                  {level}
                 </span>
                 <span
                   style={{
-                    display: "block",
-                    marginTop: 4,
-                    fontSize: 13,
-                    color: "var(--text-muted)",
-                    lineHeight: 1.5,
+                    flex: 1,
+                    height: 1,
+                    background: "var(--hairline)",
                   }}
-                >
-                  {g.summary}
-                </span>
-              </a>
-            </li>
+                />
+              </div>
+              <ul
+                style={{
+                  padding: 0,
+                  listStyle: "none",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 6,
+                }}
+              >
+                {group.map((g) => (
+                  <li key={g.slug}>
+                    <a
+                      href={`/guides/${g.slug}`}
+                      className="focus-ring"
+                      style={{
+                        display: "block",
+                        padding: "14px 16px",
+                        borderRadius: 8,
+                        border: "1px solid var(--hairline)",
+                        background: "var(--surface)",
+                        textDecoration: "none",
+                        color: "var(--text)",
+                      }}
+                    >
+                      <span style={{ fontSize: 15, fontWeight: 500, lineHeight: 1.4 }}>
+                        {g.title}
+                      </span>
+                      <span
+                        style={{
+                          display: "block",
+                          marginTop: 4,
+                          fontSize: 13,
+                          color: "var(--text-muted)",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {g.summary}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
