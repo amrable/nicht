@@ -57,7 +57,17 @@ export function CommonList() {
       .catch(() => setError("Could not load sentences."));
   }, []);
 
-  const learnedCount = useMemo(() => {
+  const totalCount = useMemo(() => {
+      if (!entries) return 0;
+      return entries.length;
+    }, [entries]);
+
+    const totalCount = useMemo(() => {
+      if (!entries) return 0;
+      return entries.length;
+    }, [entries]);
+
+    const learnedCount = useMemo(() => {
     if (!entries) return 0;
     return entries.filter((e) => isLearned(e.id)).length;
   }, [entries, isLearned]);
@@ -110,7 +120,7 @@ export function CommonList() {
       >
         Common sentences{" "}
         <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>
-          — 100 examples, fully analyzed
+          — {totalCount}{totalCount === 1 ? " example, fully analyzed" : " examples, fully analyzed"}
         </span>
       </h1>
       <p
